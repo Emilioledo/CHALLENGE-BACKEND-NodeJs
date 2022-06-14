@@ -15,15 +15,15 @@ definitions:
     type: "object"
     description: "Payload para el login al sistema"
     required:
-      - "usuario"
-      - "contraseña"
+      - "userName"
+      - "password"
     properties:
-      usuario:
+      userName:
         description: "Usuario"
         type: "string"
         minLength: 5
         maxLength: 20
-      contraseña:
+      password:
         type: "string"
         description: "Contraseña del usuario"
         minLength: 8
@@ -40,11 +40,11 @@ definitions:
     type: "object"
     description: "Payload para el login al sistema"
     required:
-      - "usuario"
+      - "userName"
       - "email"
-      - "contraseña"
+      - "password"
     properties:
-      usuario:
+      userName:
         description: "Usuario"
         type: "string"
         minLength: 5
@@ -53,7 +53,7 @@ definitions:
         description: "Email"
         type: "string"
         maxLength: 60
-      contraseña:
+      password:
         type: "string"
         description: "Contraseña del usuario"
         minLength: 8
