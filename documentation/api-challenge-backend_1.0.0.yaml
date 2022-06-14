@@ -1,0 +1,159 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "API - CHALLENGE BACKEND"
+  description: "API CHALLENGE BACKEND"
+schemes:
+  - "https"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+definitions:
+  RequestLogin:
+    type: "object"
+    description: "Payload para el login al sistema"
+    required:
+      - "usuario"
+      - "contraseña"
+    properties:
+      usuario:
+        description: "Usuario"
+        type: "string"
+        minLength: 5
+        maxLength: 20
+      contraseña:
+        type: "string"
+        description: "Contraseña del usuario"
+        minLength: 8
+        maxLength: 20
+  ResponseLogin:
+    description: "Respuesta login con token"
+    type: "object"
+    required:
+      - "token"
+    properties:
+      token:
+        type: "string"
+  RequestRegister:
+    type: "object"
+    description: "Payload para el login al sistema"
+    required:
+      - "usuario"
+      - "email"
+      - "contraseña"
+    properties:
+      usuario:
+        description: "Usuario"
+        type: "string"
+        minLength: 5
+        maxLength: 20
+      email:
+        description: "Email"
+        type: "string"
+        maxLength: 60
+      contraseña:
+        type: "string"
+        description: "Contraseña del usuario"
+        minLength: 8
+        maxLength: 20
+  Error:
+    type: "object"
+    required:
+      - "descripcion"
+    properties:
+      descripcion:
+        type: "string"
+        description: "Descripcion del error"
+parameters:
+  bearer:
+    name: "Authorization"
+    in: "header"
+    description: "Token JWT que utiliza el esquema Bearer. Formato -->  Bearer xxxxx.yyyyy.zzzzz"
+    required: true
+    type: "string"
+  requestLogin:
+    name: "requestLogin"
+    in: "body"
+    required: true
+    description: "Payload para el login de un usuario"
+    schema:
+      $ref: "#/definitions/RequestLogin"
+  requestRegister:
+    name: "requestRegister"
+    in: "body"
+    required: true
+    description: "Payload para el registro de un usuario"
+    schema:
+      $ref: "#/definitions/RequestRegister"
+responses:
+  400:
+    headers:
+      X-Timestamp:
+        type: "string"
+    description: "Error generico"
+    schema:
+      $ref: "#/definitions/Error"
+  401:
+    headers:
+      X-Timestamp:
+        type: "string"
+    description: "token vencido o no valido"
+  403:
+    headers:
+      X-Timestamp:
+        type: "string"
+    description: "Operacion no autorizada"
+  500:
+    headers:
+      X-Timestamp:
+        type: "string"
+    description: "Error interno"
+paths:
+  /auth/login:
+    post:
+      tags:
+        - "Login"
+      summary: "Permite acceder al sistema"
+      description: "login y token"
+      parameters:
+        - $ref: "#/parameters/requestLogin"
+      responses:
+        200:
+          description: "Ingreso realizado con exito"
+          headers:
+            X-Timestamp:
+              type: "string"
+          schema:
+            $ref: "#/definitions/ResponseLogin"
+        400:
+          $ref: "#/responses/400"
+        401:
+          $ref: "#/responses/401"
+        403:
+          $ref: "#/responses/403"
+        500:
+          $ref: "#/responses/500"
+  /auth/register:
+    post:
+      tags:
+        - "Register"
+      summary: "Permite registrarte al sistema"
+      description: "registro"
+      parameters:
+        - $ref: "#/parameters/RequestRegister"
+      responses:
+        200:
+          description: "Alta ingresado con exito"
+          headers:
+            X-Timestamp:
+              type: "string"
+        400:
+          $ref: "#/responses/400"
+        401:
+          $ref: "#/responses/401"
+        403:
+          $ref: "#/responses/403"
+        500:
+          $ref: "#/responses/500"
